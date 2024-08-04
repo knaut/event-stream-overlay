@@ -88,7 +88,16 @@
     const leftGyro = document.querySelector('div.gyro.left')
     const rightGyro = document.querySelector('div.gyro.right')
 
-    
+    const leftPitch = document.querySelector('.accelerometer.left .pitch .box')
+    const rightPitch = document.querySelector('.accelerometer.right .pitch .box')
+
+    const leftRoll = document.querySelector('.accelerometer.left .roll .box')
+    const rightRoll = document.querySelector('.accelerometer.right .roll .box')
+
+    const leftEmgs = document.querySelectorAll('.emg.left > div')
+    const rightEmgs = document.querySelectorAll('.emg.right > div')
+
+    console.log(leftEmgs, rightEmgs)
 
     var source = new EventSource('/osc')
 
@@ -136,8 +145,6 @@
 
       console.log(msg)
 
-
-
       switch (msg.type) {
         case 'gyro':
           if (msg.arm === 'left') {
@@ -163,10 +170,39 @@
         case 'accel':
 
           if (msg.arm === 'left') {
+            if (msg.param === 'pitch') {
+              leftPitch.style.height = msg.value
+            }
 
+            if (msg.param === 'roll') {
+              leftRoll.style.height = msg.value
+            }
+          }
+
+          if (msg.arm === 'right') {
+            if (msg.param === 'pitch') {
+              rightPitch.style.height = msg.value
+            }
+
+            if (msg.param === 'roll') {
+              rightRoll.style.height = msg.value
+            }
           }
 
         break; 
+        case 'emg':
+
+          const emgIndex = parseFloat(msg.param)
+
+          if (msg.arm === 'left') {
+            leftEmgs[ emgIndex ].style.top = `-${msg.value}px`
+          }
+
+          if (msg.arm === 'right') {
+            rightEmgs[ emgIndex ].style.top = `-${msg.value}px`
+          }
+
+        break;
       }
 
     }, false)
