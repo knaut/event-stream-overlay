@@ -1,20 +1,5 @@
 <html>
 <head>
-  <script>
-
-    var source = new EventSource('/osc')
-
-    source.addEventListener('message', function(e) {
-
-      
-
-      const data = e.data
-
-      console.log(data)
-
-    }, false)
-
-  </script>
   <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
@@ -98,6 +83,95 @@
   <div id="media-control">
     <!-- could be like a slider + buttons -->
   </div>
+
+  <script>
+    const leftGyro = document.querySelector('div.gyro.left')
+    const rightGyro = document.querySelector('div.gyro.right')
+
+    
+
+    var source = new EventSource('/osc')
+
+    source.addEventListener('message', function(e) {
+
+      const data = e.data
+
+
+      const splitVal = data.split(',')
+
+      
+
+      const splitAddr = splitVal[0].split('/')
+
+      // console.log(splitAddr, splitVal)
+
+      const firstTwo = splitAddr[2].substring(0, 2)
+      const param = splitAddr[2].substring(2, splitAddr[2].length)
+
+      let arm = ''
+      if (firstTwo === '0_' || firstTwo === '1_') {
+        if (firstTwo === '0_') {
+          arm = 'left'
+        }
+
+        if (firstTwo === '1_') {
+          arm = 'right'
+        }
+      } else {
+        arm = null
+      }
+
+      const value = splitVal[1] === 'true' ? true : (
+        splitVal[1] === 'false' ? false : (
+          parseFloat( splitVal[1] ) ? parseFloat( splitVal[1] ) : splitVal[1]
+        )
+      )
+
+      const msg = {
+        type: splitAddr[1],
+        arm,
+        param,
+        value
+      }
+
+      console.log(msg)
+
+
+
+      switch (msg.type) {
+        case 'gyro':
+          if (msg.arm === 'left') {
+            if (value === true) {
+              leftGyro.classList.add('on')
+            }
+
+            if (value === false) {
+              leftGyro.classList.remove('on')
+            }
+          }
+
+          if (msg.arm === 'right') {
+            if (value === true) {
+              rightGyro.classList.add('on')
+            }
+
+            if (value === false) {
+              rightGyro.classList.remove('on')
+            }
+          }
+        break;
+        case 'accel':
+
+          if (msg.arm === 'left') {
+
+          }
+
+        break; 
+      }
+
+    }, false)
+
+  </script>
 
 </body>
 </html>

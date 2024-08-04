@@ -132,6 +132,10 @@ body {
       border-radius: 15px;
     }
 
+    .gyro.on {
+      background: rgba(255,255,255,0.8);
+    }
+
     .gyro.left {
       left: 630px;
     }
