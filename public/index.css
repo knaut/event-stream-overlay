@@ -1,0 +1,192 @@
+body {
+      width: 1920px;
+      height: 1080px;
+      background: pink;
+      position: relative;
+      border: 2px solid fuchsia;
+
+      margin: 0;
+
+/*      padding: 50px;*/
+      box-sizing: border-box;
+    }
+
+    .box {
+      background: black;
+      height: 60px;
+      width: 60px;
+
+      display: block;
+    }
+
+    .pitch .box {
+      background: red;
+    }
+
+    .roll .box {
+      background: blue;
+    }
+
+    .accelerometer {
+      position: absolute;
+      bottom: 70px;
+
+      display: flex;
+    }
+
+    .accelerometer span:not(.box) {
+      color: white;
+      display: block;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: sans-serif;
+      position: absolute;
+      bottom: -30px;
+      width: 60px;
+    }
+
+    .accelerometer .box {
+      position: absolute;
+      bottom: 0;
+      height: 300px;
+      border-radius: 6px;
+    }
+
+    .accelerometer.right {
+      flex-direction: row-reverse;
+    }
+
+    .accelerometer.left .roll {
+      position: absolute;
+      left: 100px;
+    }
+
+    .accelerometer.right .roll {
+      position: absolute;
+      right: 100px;
+    }
+
+    .accelerometer.left {
+      left: 50px;
+    }
+
+    .accelerometer.right {
+      right: 110px;
+    }
+
+    .emg {
+      position: absolute;
+      bottom: 70px;
+
+      display: flex;
+      flex-direction: row;
+    }
+
+    .emg.right {
+      flex-direction: row-reverse;
+      right: 240px;
+    }
+
+    .emg.left {
+      left: 250px;
+    }
+
+    .emg div {
+      position: relative;
+      background: purple;
+
+      width: 30px;
+      height: 10px;
+      display: block;
+      margin-right: 12px;
+
+      border-radius: 5px;
+    }
+
+    .emg span:not(.box) {
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+      width: 100%;
+
+      position: absolute;
+      top: 22px;
+    }
+
+    .emg div:nth-of-type(2) {
+      top: -200px;
+    }
+
+    .gyro {
+      position: absolute;
+      bottom: 70px;
+
+      display: block;
+
+      border: 4px solid rgba(255, 255, 255, .9);
+      padding: 10px 60px;
+
+      color: white;
+      font-family: sans-serif;
+      text-transform: uppercase;
+      border-radius: 15px;
+    }
+
+    .gyro.left {
+      left: 630px;
+    }
+
+    .gyro.right {
+      right: 630px;
+    }
+
+    .gesture {
+      height: 75px;
+      width: 185px;
+/*      background: green;*/
+      box-sizing: border-box;
+      position: absolute;
+      bottom: 140px;
+
+      display: flex;
+      align-content: center;
+      justify-content: center;
+
+      border: 4px solid rgba(255, 255, 255, .9);
+      border-radius: 15px;
+    }
+
+    .gesture span {
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 25px;
+      
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+      text-transform: uppercase;
+
+
+    }
+
+    .gesture:after {
+      content: 'GESTURE:';
+      display: block;
+      width: 155px;
+      height: 40px;
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+
+      position: absolute;
+      top: -30px;
+    }
+
+    .gesture.left {
+      left: 630px;
+    }
+
+    .gesture.right {
+      right: 630px;
+    }

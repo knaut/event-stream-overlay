@@ -6,128 +6,16 @@
 
     source.addEventListener('message', function(e) {
 
-      console.log(e)
+      
+
+      const data = e.data
+
+      console.log(data)
+
     }, false)
 
   </script>
-  <style>
-    body {
-      width: 1920px;
-      height: 1080px;
-      background: pink;
-      position: relative;
-      border: 2px solid fuchsia;
-
-      margin: 0;
-
-/*      padding: 50px;*/
-      box-sizing: border-box;
-    }
-
-    .box {
-      background: black;
-      height: 60px;
-      width: 60px;
-
-      display: block;
-    }
-
-    .pitch .box {
-      background: red;
-    }
-
-    .roll .box {
-      background: blue;
-    }
-
-    .accelerometer {
-      position: absolute;
-      bottom: 70px;
-
-      display: flex;
-    }
-
-    .accelerometer span:not(.box) {
-      color: white;
-      display: block;
-      text-align: center;
-      text-transform: uppercase;
-      font-family: sans-serif;
-      position: absolute;
-      bottom: -30px;
-      width: 60px;
-    }
-
-    .accelerometer .box {
-      position: absolute;
-      bottom: 0;
-      height: 300px;
-    }
-
-    .accelerometer.right {
-      flex-direction: row-reverse;
-    }
-
-    .accelerometer.left .roll {
-      position: absolute;
-      left: 100px;
-    }
-
-    .accelerometer.right .roll {
-      position: absolute;
-      right: 100px;
-    }
-
-    .accelerometer.left {
-      left: 50px;
-    }
-
-    .accelerometer.right {
-      right: 110px;
-    }
-
-    .emg {
-      position: absolute;
-      bottom: 70px;
-
-      display: flex;
-      flex-direction: row;
-    }
-
-    .emg.right {
-      flex-direction: row-reverse;
-      right: 240px;
-    }
-
-    .emg.left {
-      left: 250px;
-    }
-
-    .emg div {
-      position: relative;
-      background: purple;
-
-      width: 30px;
-      height: 10px;
-      display: block;
-      margin-right: 12px;
-    }
-
-    .emg span:not(.box) {
-      color: white;
-      text-align: center;
-      font-family: sans-serif;
-      width: 100%;
-
-      position: absolute;
-      top: 30px;
-    }
-
-    .emg div:nth-of-type(2) {
-      top: -200px;
-    }
-
-  </style>
+  <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
   <!-- <h1>SSE: <span id="state"></span></h1> -->
@@ -156,7 +44,8 @@
   </div>
 
   <div class="gesture left">
-    <span>wave out<span>
+    <span>none</span>
+    <span>wave out</span>
     <span>wave in</span>
     <span>fist</span>
     <span>fingers spread</span>
@@ -164,7 +53,8 @@
   </div>
 
   <div class="gesture right">
-    <span>wave out<span>
+    <span>none</span>
+    <span>wave out</span>
     <span>wave in</span>
     <span>fist</span>
     <span>fingers spread</span>
