@@ -3,8 +3,41 @@
   <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
-  <!-- <h1>SSE: <span id="state"></span></h1> -->
-  <h3>Data: <span id="data"></span></h3>
+
+  <div id="fx-pedal">
+    <!-- <h6>fx: <span>interstellar sphere</span></h6> -->
+    <h6>fx pedal</h6>
+    <div id="fx-pedal-toggle" class="row">
+      <div class="button">on</div>
+      <div class="button">off</div>
+    </div>
+    <div class="row">
+
+      <div class="row">
+        
+        <div id="fx-pedal-left" class="column">
+          <h6>left</h6>
+
+          <div class="button">wave out</div>
+          <div class="button">wave in</div>
+          <div class="button">fist</div>
+
+        </div>
+        <div id="fx-pedal-right" class="column">
+          <h6>right</h6>
+
+          <div class="button">wave out</div>
+          <div class="button">wave in</div>
+          <div class="button">fist</div>
+
+        </div>
+
+      </div>
+    </div>
+    <div id="fx-pedal-defaults" class="row">
+      <div class="button">defaults</div>
+    </div>
+  </div>
 
   <div class="accelerometer left">
     <div class="pitch">
@@ -97,7 +130,42 @@
     const leftEmgs = document.querySelectorAll('.emg.left > div')
     const rightEmgs = document.querySelectorAll('.emg.right > div')
 
-    console.log(leftEmgs, rightEmgs)
+    const leftGestureNone = document.querySelector('.gesture.left > span:nth-child(1)')
+    const leftGestureWaveOut = document.querySelector('.gesture.left > span:nth-child(2)')
+    const leftGestureWaveIn = document.querySelector('.gesture.left > span:nth-child(3)')
+    const leftGestureFist = document.querySelector('.gesture.left > span:nth-child(4)')
+    const leftGestureFingersSpread = document.querySelector('.gesture.left > span:nth-child(5)')
+
+    const rightGestureNone = document.querySelector('.gesture.right > span:nth-child(1)')
+    const rightGestureWaveOut = document.querySelector('.gesture.right > span:nth-child(2)')
+    const rightGestureWaveIn = document.querySelector('.gesture.right > span:nth-child(3)')
+    const rightGestureFist = document.querySelector('.gesture.right > span:nth-child(4)')
+    const rightGestureFingersSpread = document.querySelector('.gesture.right > span:nth-child(5)')
+
+    const fxString = document.querySelector('#fx-pedal > h6:first-child span')
+    const fxDefaults = document.querySelector('#fx-pedal-defaults > .button')
+    const fxToggleOn = document.querySelector('#fx-pedal-toggle > .button:first-child')
+    const fxToggleOff = document.querySelector('#fx-pedal-toggle > .button:nth-child(2)')
+
+    const fxLeftWaveOut = document.querySelector('#fx-pedal-left > div.button:first-of-type')
+    const fxLeftWaveIn = document.querySelector('#fx-pedal-left > div.button:nth-of-type(2)')
+    const fxLeftFist = document.querySelector('#fx-pedal-left > div.button:nth-of-type(3)')
+
+    const fxRightWaveOut = document.querySelector('#fx-pedal-right > div.button:first-of-type')
+    const fxRightWaveIn = document.querySelector('#fx-pedal-right > div.button:nth-of-type(2)')
+    const fxRightFist = document.querySelector('#fx-pedal-right > div.button:nth-of-type(3)')
+
+    const fxStrings = {
+      '0': 'interstellar sphere',
+      '1': 'organelles',
+      '2': 'black hole',
+      '3': 'triple rotate',
+      '4': 'hexagon lattice',
+      '5': 'duo glitch',
+      '6': 'bizmuth'
+    }
+
+    // console.log(leftEmgs, rightEmgs)
 
     var source = new EventSource('/osc')
 
@@ -112,13 +180,16 @@
 
       const splitAddr = splitVal[0].split('/')
 
-      // console.log(splitAddr, splitVal)
+      console.log(splitAddr, splitVal)
 
       const firstTwo = splitAddr[2].substring(0, 2)
-      const param = splitAddr[2].substring(2, splitAddr[2].length)
+      let param = splitAddr[2]
 
       let arm = ''
       if (firstTwo === '0_' || firstTwo === '1_') {
+
+        param = splitAddr[2].substring(2, splitAddr[2].length)
+
         if (firstTwo === '0_') {
           arm = 'left'
         }
@@ -143,7 +214,7 @@
         value
       }
 
-      console.log(msg)
+      // console.log(msg)
 
       switch (msg.type) {
         case 'gyro':
@@ -200,6 +271,203 @@
 
           if (msg.arm === 'right') {
             rightEmgs[ emgIndex ].style.top = `-${msg.value}px`
+          }
+
+        break;
+        case 'gesture':
+
+          // console.log(msg)
+
+          if (msg.arm === 'left') {
+            if (msg.param === 'waveOut') {
+
+              if (msg.value === true) {
+                leftGestureWaveOut.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                leftGestureWaveOut.classList.remove('on')
+              }
+
+            }
+
+            if (msg.param === 'waveIn') {
+
+              if (msg.value === true) {
+                leftGestureWaveIn.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                leftGestureWaveIn.classList.remove('on')
+              }
+              
+            }
+
+            if (msg.param === 'fist') {
+
+              if (msg.value === true) {
+                leftGestureFist.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                leftGestureFist.classList.remove('on')
+              }
+              
+            }
+
+            if (msg.param === 'fingersSpread') {
+
+              if (msg.value === true) {
+                leftGestureFingersSpread.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                leftGestureFingersSpread.classList.remove('on')
+              }
+              
+            }
+          }
+
+          if (msg.arm === 'right') {
+            if (msg.param === 'waveOut') {
+
+              if (msg.value === true) {
+                rightGestureWaveOut.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                rightGestureWaveOut.classList.remove('on')
+              }
+
+            }
+
+            if (msg.param === 'waveIn') {
+
+              if (msg.value === true) {
+                rightGestureWaveIn.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                rightGestureWaveIn.classList.remove('on')
+              }
+              
+            }
+
+            if (msg.param === 'fist') {
+
+              if (msg.value === true) {
+                rightGestureFist.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                rightGestureFist.classList.remove('on')
+              }
+              
+            }
+
+            if (msg.param === 'fingersSpread') {
+
+              if (msg.value === true) {
+                rightGestureFingersSpread.classList.add('on')
+              }
+
+              if (msg.value === false) {
+                rightGestureFingersSpread.classList.remove('on')
+              }
+              
+            }
+          }
+
+        break;
+        case 'fx':
+
+          if (msg.arm === 'left') {
+
+            if (msg.param === 'waveOut') {
+              if (msg.value === true) {
+                fxLeftWaveOut.classList.add('on')
+              } else {
+                fxLeftWaveOut.classList.remove('on')
+              }
+            }
+
+            if (msg.param === 'waveIn') {
+              if (msg.value === true) {
+                fxLeftWaveIn.classList.add('on')
+              } else {
+                fxLeftWaveIn.classList.remove('on')
+              }
+            }
+
+            if (msg.param === 'fist') {
+              if (msg.value === true) {
+                fxLeftFist.classList.add('on')
+              } else {
+                fxLeftFist.classList.remove('on')
+              }
+            }
+
+          } else if (msg.arm === 'right') {
+
+            if (msg.param === 'waveOut') {
+              if (msg.value === true) {
+                fxRightWaveOut.classList.add('on')
+              } else {
+                fxRightWaveOut.classList.remove('on')
+              }
+            }
+
+            if (msg.param === 'waveIn') {
+              if (msg.value === true) {
+                fxRightWaveIn.classList.add('on')
+              } else {
+                fxRightWaveIn.classList.remove('on')
+              }
+            }
+
+            if (msg.param === 'fist') {
+              if (msg.value === true) {
+                fxRightFist.classList.add('on')
+              } else {
+                fxRightFist.classList.remove('on')
+              }
+            }
+
+          } else {
+
+            if (msg.param === 'pedal_toggle') {
+              if (msg.value === true) {
+
+                fxToggleOn.classList.add('on')
+                fxToggleOff.classList.remove('on')
+
+              } else {
+
+                fxToggleOn.classList.remove('on')
+                fxToggleOff.classList.add('on')
+
+                fxLeftWaveOut.classList.remove('on')
+                fxLeftWaveIn.classList.remove('on')
+                fxLeftFist.classList.remove('on')
+                fxRightWaveOut.classList.remove('on')
+                fxRightWaveIn.classList.remove('on')
+                fxRightFist.classList.remove('on')
+
+              }
+            }
+
+            if (msg.param === 'defaults') {
+              if (msg.value === true) {
+                fxDefaults.classList.add('on')
+              } else {
+                fxDefaults.classList.remove('on')
+              }
+            }
+
+            if (msg.param === 'string') {
+              fxString.innerText = fxStrings[ msg.value ]
+            }
+
           }
 
         break;

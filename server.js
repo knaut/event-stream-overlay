@@ -24,7 +24,7 @@ app.get('/osc', function(req, res) {
   // countdown(res, 10)
 
   oscServer.on('message', msg => {
-    console.log('osc message:', msg)
+    // console.log('osc message:', msg)
 
     res.write("data: " + `${msg}` + "\n\n")
   })
