@@ -17,6 +17,7 @@
 	"type": "module",
 	"dependencies": {
 		"express": "^4.19.2",
-		"node-osc": "^8.0.11"
+		"node-osc": "^8.0.11",
+		"osc-min": "^1.1.2"
 	}
 }
