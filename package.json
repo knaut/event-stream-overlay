@@ -1,5 +1,6 @@
 {
 	"name": "event-stream-overlay",
+	"description": "a heads-up display for users requiring visual feedback from various bio-sensors",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
