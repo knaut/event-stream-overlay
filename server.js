@@ -1,13 +1,9 @@
 import express from 'express'
 import * as osc from 'node-osc'
-
 import oscMin from 'osc-min'
-
 import dgram from 'dgram'
 
 const udp = dgram.createSocket('udp4')
-
-// console.log(osc)
 
 const app = express()
 app.use(express.static('public'))
@@ -23,17 +19,6 @@ const appPort = 41234
 const oscServer = new osc.Server(vdmx.port, vdmx.ip, () => {
   console.log('OSC server listening')
 })
-// console.log(oscServer)
-
-const oscClient = new osc.Client(vdmx.ip, 41234)
-// console.log(oscClient)
-
-// const buf = oscMin.toBuffer({
-//   address: '/test',
-//   args: 1
-// })
-
-// udp.send(buf, 0, buf.length, appPort, vdmx.ip)
 
 const fx = [
   'interstellar sphere',
@@ -48,36 +33,10 @@ const fx = [
 
 let lastFxIndex = null
 
-oscServer.on('message', msg => {
-  // console.log(msg)
-
-  const [ addr, val ] = msg
-
-  if (addr === '/fx/random_preset') {
-    let randIndex;
-
-    do {
-      randIndex = Math.floor( Math.random() * fx.length)
-    }
-    while (randIndex === lastFxIndex)
-
-    lastFxIndex = randIndex
-
-    const randPick = fx[ randIndex ]
-    const randAddr = '/overlay/fx_index'
-    
-    // console.log(randAddr, randIndex)
-
-    // oscClient.send('/overlay/fx_index', randIndex, () => {})
-
-    const buf = oscMin.toBuffer({
-      address: randAddr,
-      args: randIndex
-    })
-
-    udp.send(buf, 0, buf.length, appPort, vdmx.ip)
-  }
-})
+let currentFx = {
+  name: null,
+  index: null
+}
 
 app.get('/osc', function(req, res) {
   res.writeHead(200, {
@@ -85,12 +44,39 @@ app.get('/osc', function(req, res) {
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive'
   })
-  // countdown(res, 10)
 
   oscServer.on('message', msg => {
-    // console.log('osc message:', msg)
+    const [ addr, val ] = msg
 
-    res.write("data: " + `${msg}` + "\n\n")
+    if (addr === '/fx/random_preset') {
+      let randIndex;
+
+      do {
+        randIndex = Math.floor( Math.random() * fx.length)
+      }
+      while (randIndex === lastFxIndex)
+
+      lastFxIndex = randIndex
+
+      const randPick = fx[ randIndex ]
+      const randAddr = '/overlay/fx_index'
+      
+      const buf = oscMin.toBuffer({
+        address: randAddr,
+        args: randIndex
+      })
+
+
+      res.write("data: " + `/preset/${ fx[randIndex] }` + "\n\n")
+
+      udp.send(buf, 0, buf.length, appPort, vdmx.ip)
+    
+    } else {
+
+      res.write("data: " + `${msg}` + "\n\n")
+
+    }
+
   })
 })
 

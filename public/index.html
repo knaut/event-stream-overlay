@@ -6,7 +6,7 @@
 
   <div id="fx-pedal">
     <!-- <h6>fx: <span>interstellar sphere</span></h6> -->
-    <h6>fx pedal</h6>
+    <h6>fx: <span id ="fx-pedal-preset">name</span></h6>
     <div id="fx-pedal-toggle" class="row">
       <div class="button">on</div>
       <div class="button">off</div>
@@ -155,32 +155,13 @@
     const fxRightWaveIn = document.querySelector('#fx-pedal-right > div.button:nth-of-type(2)')
     const fxRightFist = document.querySelector('#fx-pedal-right > div.button:nth-of-type(3)')
 
-    const fxStrings = {
-      '0': 'interstellar sphere',
-      '1': 'organelles',
-      '2': 'black hole',
-      '3': 'triple rotate',
-      '4': 'hexagon lattice',
-      '5': 'duo glitch',
-      '6': 'bizmuth'
-    }
-
-    // console.log(leftEmgs, rightEmgs)
-
     var source = new EventSource('/osc')
 
     source.addEventListener('message', function(e) {
 
       const data = e.data
-
-
       const splitVal = data.split(',')
-
-      
-
       const splitAddr = splitVal[0].split('/')
-
-      // console.log(splitAddr, splitVal)
 
       const firstTwo = splitAddr[2].substring(0, 2)
       let param = splitAddr[2]
@@ -213,8 +194,6 @@
         param,
         value
       }
-
-      // console.log(msg)
 
       switch (msg.type) {
         case 'gyro':
@@ -464,11 +443,15 @@
               }
             }
 
-            if (msg.param === 'string') {
-              fxString.innerText = fxStrings[ msg.value ]
-            }
-
           }
+
+        break;
+        case 'preset':
+
+
+          const { param } = msg
+
+          fxString.innerText = param
 
         break;
       }
